@@ -1,0 +1,39 @@
+@font-stack:    Helvetica, sans-serif;
+@primary-color: #999;
+
+body {
+    font: 10pt @font-stack;
+    color: @primary-color;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#grid {
+    width: 100%;
+    height: 100%;
+    background: grey;
+}
+
+.col {
+    background: grey;
+    float:left;
+    width: 10%;
+    height: 100%;
+}
+.block {
+    width: 100%;
+    height: 10%;
+    background: red;
+    float: left;
+    margin: 0;
+    padding: 0;
+    transition: all;
+}
+
+.active {
+    -webkit-box-shadow: inset 0 0 10px #000000;
+}
