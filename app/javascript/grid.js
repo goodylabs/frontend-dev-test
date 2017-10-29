@@ -1,9 +1,10 @@
 export const COLOURS = ['red', 'green', 'blue', 'yellow'];
 const MAX_X = 10;
 const MAX_Y = 10;
+const debugMode = false;
 
 export class Block {
-    constructor (x, y) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
@@ -11,8 +12,10 @@ export class Block {
 }
 
 export class BlockGrid {
-    constructor () {
+    constructor() {
         this.grid = [];
+        this.toRemoveBlocks = [];
+        this.processedBlocks = [];
 
         for (let x = 0; x < MAX_X; x++) {
             let col = [];
@@ -26,7 +29,7 @@ export class BlockGrid {
         return this;
     }
 
-    render (el = document.querySelector('#gridEl')) {
+    render(el = document.querySelector('#gridEl')) {
         for (let x = 0; x < MAX_X; x++) {
             let id = 'col_' + x;
             let colEl = document.createElement('div');
@@ -50,8 +53,102 @@ export class BlockGrid {
         return this;
     }
 
-    blockClicked (e, block) {
+    debugPrint(text) {
+        if (debugMode) {
+            console.log(text);
+        }
+    }
+
+    removeBlocks(blocks) {
+        for (let i = 0; i < blocks.length; i++) {
+            let x = blocks[i].x;
+            let y = blocks[i].y;
+            let id = `block_${x}x${y}`;
+            console.log(id);
+            document.getElementById(id).remove();
+        }
+    }
+
+    hasBlockBeenAlreadyProcessed(block) {
+        if (this.processedBlocks.includes(block)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    addToRemoveBlocks(block) {
+        //TODO Improve recursion!
+
+        this.debugPrint('Finding neighbours of the same color of block (' + block.x + ' , ' + block.y + ')');
+        if (!this.hasBlockBeenAlreadyProcessed(block)) {
+
+            this.processedBlocks.push(block);
+
+            //Neighbours up
+            let isBlockPositionedMaxToUp = block.y === 0;
+            this.debugPrint('isBlockPositionedMaxToUp: ' + isBlockPositionedMaxToUp);
+            if (!isBlockPositionedMaxToUp) {
+                let blockOnTop = this.grid[block.x][block.y - 1];
+                if (blockOnTop.colour === block.colour) {
+                    this.debugPrint('Block on top is the same colour');
+                    if(!this.toRemoveBlocks.includes(blockOnTop)){
+                        this.toRemoveBlocks.push(blockOnTop);
+                    }
+                    this.addToRemoveBlocks(blockOnTop);
+                }
+            }
+            //Neighbours left
+            let isBlockPositionedMaxToLeft = block.x === 0;
+            this.debugPrint('isBlockPositionedMaxToLeft: ' + isBlockPositionedMaxToLeft);
+            if (!isBlockPositionedMaxToLeft) {
+                let blockOnLeft = this.grid[block.x - 1][block.y];
+                if (blockOnLeft.colour === block.colour) {
+                    this.debugPrint('Block on left is the same colour');
+                    if(!this.toRemoveBlocks.includes(blockOnLeft)) {
+                        this.toRemoveBlocks.push(blockOnLeft);
+                    }
+                    this.addToRemoveBlocks(blockOnLeft);
+                }
+            }
+            //Neighbours right
+            let isBlockPositionedMaxToRight = block.x === MAX_X - 1;
+            this.debugPrint('isBlockPositionedMaxToRight: ' + isBlockPositionedMaxToRight);
+            if (!isBlockPositionedMaxToRight) {
+                let blockOnRight = this.grid[block.x + 1][block.y];
+                if (blockOnRight.colour === block.colour) {
+                    this.debugPrint('Block on right is the same colour');
+                    if(!this.toRemoveBlocks.includes(blockOnRight)) {
+                        this.toRemoveBlocks.push(blockOnRight);
+                    }
+                    this.addToRemoveBlocks(blockOnRight);
+
+                }
+            }
+            //Neighbours down
+            let isBlockPositionedMaxToBottom = block.y === MAX_Y - 1;
+            this.debugPrint('isBlockPositionedMaxToBottom: ' + isBlockPositionedMaxToBottom);
+            if (!isBlockPositionedMaxToBottom) {
+                let blockOnDown = this.grid[block.x][block.y + 1];
+                if (blockOnDown.colour === block.colour) {
+                    this.debugPrint('Block on down is the same colour');
+                    if(!this.toRemoveBlocks.includes(blockOnDown)) {
+                        this.toRemoveBlocks.push(blockOnDown);
+                    }
+                    this.addToRemoveBlocks(blockOnDown);
+                }
+            }
+        }
+
+    }
+
+    blockClicked(e, block) {
         console.log(e, block);
+        this.toRemoveBlocks = [];
+        this.processedBlocks = [];
+        this.toRemoveBlocks.push(block);
+        this.addToRemoveBlocks(block);
+        this.removeBlocks(this.toRemoveBlocks);
     }
 }
 
