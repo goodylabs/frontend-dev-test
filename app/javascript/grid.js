@@ -2,6 +2,69 @@ export const COLOURS = ['red', 'green', 'blue', 'yellow'];
 const MAX_X = 10;
 const MAX_Y = 10;
 
+export class BlockGridManager {
+    constructor (blockGrid) {
+        this.blockGrid = blockGrid;
+    }
+    deleteGroupByBlock (block) {
+        const blockGrid = this.blockGrid;
+        if (!blockGrid) throw 'BlockGrid not binded!!!';
+
+        this._removeBlock(block);
+    }
+    _getBlockID (block) {
+        return `block_${block.x}x${block.y}`
+    }
+    _removeBlock (block) {
+        const {x,y} = block;
+        const blockElemID = this._getBlockID(block);
+        const grid = this.blockGrid.grid;
+
+        document.getElementById(blockElemID).remove();
+        this.blockGrid.grid[x][y] = null;
+
+        const neighbours = {
+            up: y === MAX_Y - 1 ? null : grid[x][y+1],
+            right: x === MAX_X - 1 ? null : grid[x+1][y],
+            down: y === 0 ? null : grid[x][y-1],
+            left: x === 0 ? null : grid[x-1][y]
+        };
+        if (neighbours.up !== null && neighbours.up.colour === block.colour) {
+            this._removeBlock(neighbours.up)
+        }
+        if (neighbours.down !== null && neighbours.down.colour === block.colour) {
+            this._removeBlock(neighbours.down)
+        }
+        if (neighbours.left !== null && neighbours.left.colour === block.colour) {
+            this._removeBlock(neighbours.left)
+        }
+        if (neighbours.right !== null && neighbours.right.colour === block.colour) {
+            this._removeBlock(neighbours.right)
+        }
+
+    }
+    _moveDown (block) {
+        const grid = this.blockGrid.grid;
+        const {x,y} = block;
+
+        if (y < 0) throw 'Error! Tried to move under bottom border';
+
+        grid[x][y] = null;
+        block.y -= 1;
+        grid[x][y - 1] = block;
+
+        let i = y + 1;
+        while (i < MAX_Y - 1) {
+            const upperBlock = grid[x][i];
+            upperBlock.y -= 1;
+            grid[x][i - 1] = upperBlock;
+            grid[x][i] = null;
+            i++;
+        }
+    }
+
+}
+
 export class Block {
     constructor (x, y) {
         this.x = x;
@@ -46,12 +109,13 @@ export class BlockGrid {
                 colEl.appendChild(blockEl);
             }
         }
-
         return this;
     }
 
     blockClicked (e, block) {
         console.log(e, block);
+        const blockGridManager = new BlockGridManager(this);
+        blockGridManager.deleteGroupByBlock(block);
     }
 }
 
