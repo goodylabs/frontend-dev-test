@@ -20,7 +20,7 @@ export class BlockGridManager {
         const blockElemID = this._getBlockID(block);
         const blockElem = document.getElementById(blockElemID);
 
-        if (!blockElem) {console.log('blockElem not found');return;}
+        if (!blockElem) return;
 
         blockElem.remove();
         this.blockGrid.grid[x][y] = null;
@@ -50,16 +50,17 @@ export class BlockGridManager {
         const grid = this.blockGrid.grid;
         const { x, y } = block;
 
-        if (y === 0) return ;console.error( 'Error! Tried to move under bottom border');
+        if (y === 0) return ;
 
         const blockElem = document.getElementById(this._getBlockID(block));
         const newId = `block_${block.x}x${block.y - 1}`;
+
         blockElem.id = newId;
         block.y -= 1;
         grid[x][y - 1] = block;
         grid[x][y] = null;
 
-        if (y + 1 >= MAX_Y) {console.error( 'Error! Tried to move above top border' ); return;}
+        if (y + 1 >= MAX_Y) return;
 
         const upperBlock = grid[x][y+1];
         if (upperBlock !== null && upperBlock) {
@@ -75,10 +76,8 @@ export class BlockGridManager {
                 const currBlock = grid[x][y];
                 if (currBlock !== null) {
 
-                    // console.log(`Currblock is ${currBlock.colour} at x:${x} y:${y} isn\`t null`);
                     const isNullUnderneth = grid[x][y-1] === null;
                     if (isNullUnderneth && currBlock !== undefined) {
-                        // console.log('underneth is null');
                         this._moveDown(currBlock)
                     }
                 }
