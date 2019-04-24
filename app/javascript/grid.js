@@ -12,15 +12,17 @@ export class BlockGridManager {
 
         this._removeBlock(block);
     }
-    _getBlockID (block) {
-        return `block_${block.x}x${block.y}`
-    }
     _removeBlock (block) {
+        if (!block) return;
+
+        const grid = this.blockGrid.grid;
         const {x,y} = block;
         const blockElemID = this._getBlockID(block);
-        const grid = this.blockGrid.grid;
+        const blockElem = document.getElementById(blockElemID);
 
-        document.getElementById(blockElemID).remove();
+        if (!blockElem) {console.log('blockElem not found');return;}
+
+        blockElem.remove();
         this.blockGrid.grid[x][y] = null;
 
         const neighbours = {
@@ -42,27 +44,51 @@ export class BlockGridManager {
             this._removeBlock(neighbours.right)
         }
 
+        this._imitateGravity();
     }
     _moveDown (block) {
         const grid = this.blockGrid.grid;
-        const {x,y} = block;
+        const { x, y } = block;
 
-        if (y < 0) throw 'Error! Tried to move under bottom border';
+        if (y === 0) return ;console.error( 'Error! Tried to move under bottom border');
 
-        grid[x][y] = null;
+        const blockElem = document.getElementById(this._getBlockID(block));
+        const newId = `block_${block.x}x${block.y - 1}`;
+        blockElem.id = newId;
         block.y -= 1;
         grid[x][y - 1] = block;
+        grid[x][y] = null;
 
-        let i = y + 1;
-        while (i < MAX_Y - 1) {
-            const upperBlock = grid[x][i];
-            upperBlock.y -= 1;
-            grid[x][i - 1] = upperBlock;
-            grid[x][i] = null;
-            i++;
+        if (y + 1 >= MAX_Y) {console.error( 'Error! Tried to move above top border' ); return;}
+
+        const upperBlock = grid[x][y+1];
+        if (upperBlock !== null && upperBlock) {
+            this._moveDown(upperBlock);
         }
-    }
 
+    }
+    _imitateGravity () {
+        const grid = this.blockGrid.grid;
+
+        for (let x = MAX_X - 1; x >= 0; x--) {
+            for (let y = MAX_Y - 1; y >= 0; y--) {
+                const currBlock = grid[x][y];
+                if (currBlock !== null) {
+
+                    // console.log(`Currblock is ${currBlock.colour} at x:${x} y:${y} isn\`t null`);
+                    const isNullUnderneth = grid[x][y-1] === null;
+                    if (isNullUnderneth && currBlock !== undefined) {
+                        // console.log('underneth is null');
+                        this._moveDown(currBlock)
+                    }
+                }
+            }
+        }
+        console.log(grid);
+    }
+    _getBlockID (block) {
+        return `block_${block.x}x${block.y}`
+    }
 }
 
 export class Block {
@@ -82,10 +108,8 @@ export class BlockGrid {
             for (let y = 0; y < MAX_Y; y++) {
                 col.push(new Block(x, y));
             }
-
             this.grid.push(col);
         }
-
         return this;
     }
 
