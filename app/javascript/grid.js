@@ -2,15 +2,17 @@ export const COLOURS = ['red', 'green', 'blue', 'yellow'];
 const MAX_X = 10;
 const MAX_Y = 10;
 
-export class BlockGridManager {
+export class BlockGridManager { //TODO: sometimes deletes too many blocks in column when robust group (kinda works when using async await (click some more time))
     constructor (blockGrid) {
         this.blockGrid = blockGrid;
     }
-    deleteGroupByBlock (block) {
+    async deleteGroupByBlock (block) {
         const blockGrid = this.blockGrid;
         if (!blockGrid) throw 'BlockGrid not binded!!!';
 
-        this._removeBlock(block);
+        await this._removeBlock(block);
+        this._imitateGravity();
+
     }
     _removeBlock (block) {
         if (!block) return;
@@ -44,7 +46,6 @@ export class BlockGridManager {
             this._removeBlock(neighbours.right)
         }
 
-        this._imitateGravity();
     }
     _moveDown (block) {
         const grid = this.blockGrid.grid;
