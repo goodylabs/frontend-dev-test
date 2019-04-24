@@ -2,7 +2,7 @@ export const COLOURS = ['red', 'green', 'blue', 'yellow'];
 const MAX_X = 10;
 const MAX_Y = 10;
 
-export class BlockGridManager { //TODO: sometimes deletes too many blocks in column when robust group (kinda works when using async await (click some more time))
+export class BlockGridManager {
     constructor (blockGrid) {
         this.blockGrid = blockGrid;
     }
@@ -21,8 +21,6 @@ export class BlockGridManager { //TODO: sometimes deletes too many blocks in col
         const {x,y} = block;
         const blockElemID = this._getBlockID(block);
         const blockElem = document.getElementById(blockElemID);
-
-        if (!blockElem) return;
 
         blockElem.remove();
         this.blockGrid.grid[x][y] = null;
@@ -45,13 +43,12 @@ export class BlockGridManager { //TODO: sometimes deletes too many blocks in col
         if (neighbours.right !== null && neighbours.right.colour === block.colour) {
             this._removeBlock(neighbours.right)
         }
-
     }
     _moveDown (block) {
         const grid = this.blockGrid.grid;
         const { x, y } = block;
 
-        if (y === 0) return ;
+        if (y === 0) return;
 
         const blockElem = document.getElementById(this._getBlockID(block));
         const newId = `block_${block.x}x${block.y - 1}`;
@@ -76,7 +73,6 @@ export class BlockGridManager { //TODO: sometimes deletes too many blocks in col
             for (let y = MAX_Y - 1; y >= 0; y--) {
                 const currBlock = grid[x][y];
                 if (currBlock !== null) {
-
                     const isNullUnderneth = grid[x][y-1] === null;
                     if (isNullUnderneth && currBlock !== undefined) {
                         this._moveDown(currBlock)
@@ -84,7 +80,6 @@ export class BlockGridManager { //TODO: sometimes deletes too many blocks in col
                 }
             }
         }
-        console.log(grid);
     }
     _getBlockID (block) {
         return `block_${block.x}x${block.y}`
