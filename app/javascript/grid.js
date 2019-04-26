@@ -51,9 +51,18 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
-        let clickedId = `block_${block.x}x${block.y}`;
-        let clickedBlock = document.getElementById(clickedId);
-        clickedBlock.className = 'active';
+        for(let i = block.x - 1; i <= block.x + 1; i++)
+        {
+            for(let j = block.y + 1; j >= block.y - 1; j--)
+            {
+                if(i >= 0 && i <= 9 && j >= 0 && j <= 9)
+                {
+                    let removedId = `block_${i}x${j}`;
+                    let removedBlock = document.getElementById(removedId);
+                    removedBlock.className = 'active';
+                }
+            }
+        }
         
         console.log(e, block);
     }
