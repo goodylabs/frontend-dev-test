@@ -51,6 +51,10 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
+        let clickedId = `block_${block.x}x${block.y}`;
+        let clickedBlock = document.getElementById(clickedId);
+        clickedBlock.className = 'active';
+        
         console.log(e, block);
     }
 }
