@@ -30,6 +30,16 @@ gulp.task("buildtests", function () {
     .pipe(source('tests.js'))
     .pipe(buffer())
     .pipe(gulp.dest('test-build'));
+
+    browserify({
+        entries: ['test/DOM.test.js']
+    })
+    .on('error', function(err) { console.error(err); this.emit('end'); })
+    .transform('babelify', {presets: ["es2015"]})
+    .bundle()
+    .pipe(source('DOM.test.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('test-build'));
 });
 
 gulp.task('connect', function () {
