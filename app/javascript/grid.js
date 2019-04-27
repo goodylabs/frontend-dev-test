@@ -55,9 +55,9 @@ export class BlockGrid {
         {
             for(let j = block.y + 1; j >= block.y - 1; j--)
             {
-                if(i >= 0 && i <= 9 && j >= 0 && j <= 9)
+                let removedId = `block_${i}x${j}`;
+                if(document.getElementById(removedId) != null && document.getElementById(removedId).style.background == block.colour) 
                 {
-                    let removedId = `block_${i}x${j}`;
                     let removedBlock = document.getElementById(removedId);
                     removedBlock.className = 'active';
                 }
