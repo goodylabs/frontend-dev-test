@@ -35,6 +35,8 @@ describe('BlockGrid', () => {
             });
         });
     });
+
+
 });
 
 describe('BlockGridManager', () => {
@@ -55,4 +57,6 @@ describe('BlockGridManager', () => {
         const expectedID = `block_${coords.x}x${coords.y}`;
         assert.equal(blockGridManager._getBlockID(block), expectedID, 'getBlockID returned id as expected');
     });
+
+
 });
