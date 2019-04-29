@@ -1,14 +1,7 @@
-export const COLOURS = ['red', 'green', 'blue', 'yellow'];
+import {Block} from './block';
+
 const MAX_X = 10;
 const MAX_Y = 10;
-
-export class Block {
-    constructor (x, y) {
-        this.x = x;
-        this.y = y;
-        this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
-    }
-}
 
 export class BlockGrid {
     constructor () {
