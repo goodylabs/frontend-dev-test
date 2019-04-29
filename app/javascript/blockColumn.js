@@ -26,7 +26,10 @@ export class BlockColumn {
         const lastIndex = MAX_Y-1;
         const blocksAmount = this.col.length;
         for(let i = 0;i < blocksAmount; i++) {
-            this.col[blocksAmount - 1 - i].y = lastIndex - i;
+            const block = this.col[blocksAmount - 1 - i];
+            const blockElement = document.getElementById(`block_${block.x}x${block.y}`);
+            block.y = lastIndex - i;
+            blockElement.id = `block_${block.x}x${block.y}`;
         }
     }
 
@@ -47,7 +50,6 @@ export class BlockColumn {
             removedHeightElement.style.height = `${this.removedBlocks * 10}%`;
         }
         this.updateYCoordinates();
-        console.log(this.col);
     }
 
     getBlock(index) {
