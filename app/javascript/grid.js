@@ -1,8 +1,6 @@
-import {Block} from './block';
 import {BlockColumn} from "./blockColumn";
 
 const MAX_X = 10;
-const MAX_Y = 10;
 
 export class BlockGrid {
     constructor () {
@@ -22,11 +20,8 @@ export class BlockGrid {
             colEl.className = 'col';
             colEl.id = id;
             el.appendChild(colEl);
-
-            for (let y = MAX_Y - 1; y >= 0; y--) {
-                let block = this.grid[x].getBlock(y);
-                block.render(colEl, this.blockClicked);
-            }
+            const column = this.grid[x];
+            column.render(colEl, this.blockClicked);
         }
 
         return this;

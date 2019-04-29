@@ -10,6 +10,12 @@ export class BlockColumn {
         }
     }
 
+    render (colEl, blockClicked) {
+        this.col.forEach((block) => {
+            block.render(colEl, blockClicked);
+        })
+    }
+
     getBlock(index) {
         return this.col[index] || null;
     }
