@@ -10,7 +10,7 @@ export class BlockGrid {
             this.grid.push(new BlockColumn(x));
         }
 
-        return this;
+        this.blockClicked = this.blockClicked.bind(this);
     }
 
     render (el = document.querySelector('#gridEl')) {
@@ -23,11 +23,10 @@ export class BlockGrid {
             const column = this.grid[x];
             column.render(colEl, this.blockClicked);
         }
-
-        return this;
     }
     blockClicked (e, block) {
-        console.log(e, block);
+        const blockColumn = this.grid[block.x];
+        blockColumn.removeBlockFromColumn(block.x, block.y);
     }
 }
 

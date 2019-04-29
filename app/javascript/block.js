@@ -1,4 +1,4 @@
-export const COLOURS = ['red', 'green', 'blue', 'yellow'];
+import {COLOURS} from "./constants/colours";
 
 export class Block {
     constructor (x, y) {
