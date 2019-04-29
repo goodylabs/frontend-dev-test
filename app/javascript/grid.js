@@ -1,4 +1,5 @@
 import {Block} from './block';
+import {BlockColumn} from "./blockColumn";
 
 const MAX_X = 10;
 const MAX_Y = 10;
@@ -8,12 +9,7 @@ export class BlockGrid {
         this.grid = [];
 
         for (let x = 0; x < MAX_X; x++) {
-            let col = [];
-            for (let y = 0; y < MAX_Y; y++) {
-                col.push(new Block(x, y));
-            }
-
-            this.grid.push(col);
+            this.grid.push(new BlockColumn(x).col);
         }
 
         return this;
@@ -42,7 +38,6 @@ export class BlockGrid {
 
         return this;
     }
-
     blockClicked (e, block) {
         console.log(e, block);
     }
