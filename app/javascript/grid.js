@@ -9,7 +9,7 @@ export class BlockGrid {
         this.grid = [];
 
         for (let x = 0; x < MAX_X; x++) {
-            this.grid.push(new BlockColumn(x).col);
+            this.grid.push(new BlockColumn(x));
         }
 
         return this;
@@ -24,15 +24,8 @@ export class BlockGrid {
             el.appendChild(colEl);
 
             for (let y = MAX_Y - 1; y >= 0; y--) {
-                let block = this.grid[x][y],
-                    id = `block_${x}x${y}`,
-                    blockEl = document.createElement('div');
-
-                blockEl.id = id;
-                blockEl.className = 'block';
-                blockEl.style.background = block.colour;
-                blockEl.addEventListener('click', (evt) => this.blockClicked(evt, block));
-                colEl.appendChild(blockEl);
+                let block = this.grid[x].getBlock(y);
+                block.render(colEl, this.blockClicked);
             }
         }
 

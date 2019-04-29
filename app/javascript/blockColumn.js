@@ -9,5 +9,9 @@ export class BlockColumn {
             this.col.push(new Block(x, y));
         }
     }
+
+    getBlock(index) {
+        return this.col[index] || null;
+    }
 }
 
