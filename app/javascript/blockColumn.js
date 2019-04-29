@@ -22,6 +22,14 @@ export class BlockColumn {
         })
     }
 
+    updateYCoordinates() {
+        const lastIndex = MAX_Y-1;
+        const blocksAmount = this.col.length;
+        for(let i = 0;i < blocksAmount; i++) {
+            this.col[blocksAmount - 1 - i].y = lastIndex - i;
+        }
+    }
+
     removeBlockFromColumn (x, y) {
         let foundIndex = -1;
         this.col.forEach((block, index) => {
@@ -38,6 +46,8 @@ export class BlockColumn {
             const removedHeightElement = document.getElementById(`removed_height_${x}`);
             removedHeightElement.style.height = `${this.removedBlocks * 10}%`;
         }
+        this.updateYCoordinates();
+        console.log(this.col);
     }
 
     getBlock(index) {
