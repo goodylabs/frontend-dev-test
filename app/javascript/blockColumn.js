@@ -33,13 +33,18 @@ export class BlockColumn {
         }
     }
 
-    removeBlockFromColumn (x, y) {
+    findBlockIndexByY (y) {
         let foundIndex = -1;
         this.col.forEach((block, index) => {
             if(block.y === y) {
                 foundIndex = index;
             }
         });
+        return foundIndex;
+    }
+
+    removeBlockFromColumn (x, y) {
+        const foundIndex = this.findBlockIndexByY(y);
         if (foundIndex > -1) {
             this.col.splice(foundIndex, 1);
             const columnElement = document.getElementById(`col_${x}`);
