@@ -37,7 +37,7 @@ export class BlockColumn {
         let foundIndex = -1;
         this.col.forEach((block, index) => {
             if (block.y === y) {
-                return index;
+                foundIndex = index;
             }
         });
         return foundIndex;
