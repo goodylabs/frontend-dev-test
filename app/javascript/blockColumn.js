@@ -1,8 +1,9 @@
 import {Block} from './block';
+
 const MAX_Y = 10;
 
 export class BlockColumn {
-    constructor (x) {
+    constructor(x) {
         this.col = [];
         this.x = x;
         this.removedBlocks = 0;
@@ -11,7 +12,7 @@ export class BlockColumn {
         }
     }
 
-    render (colEl, blockClicked) {
+    render(colEl, blockClicked) {
         const removedHeight = document.createElement('div');
         removedHeight.id = `removed_height_${this.x}`;
         removedHeight.className = 'col-removed-space';
@@ -22,9 +23,9 @@ export class BlockColumn {
     }
 
     updateYCoordinates() {
-        const lastIndex = MAX_Y-1;
+        const lastIndex = MAX_Y - 1;
         const blocksAmount = this.col.length;
-        for(let i = 0;i < blocksAmount; i++) {
+        for (let i = 0; i < blocksAmount; i++) {
             const block = this.col[blocksAmount - 1 - i];
             const blockElement = document.getElementById(`block_${block.x}x${block.y}`);
             block.y = lastIndex - i;
@@ -32,17 +33,17 @@ export class BlockColumn {
         }
     }
 
-    findBlockIndexByY (y) {
+    findBlockIndexByY(y) {
         let foundIndex = -1;
         this.col.forEach((block, index) => {
-            if(block.y === y) {
+            if (block.y === y) {
                 return index;
             }
         });
         return foundIndex;
     }
 
-    removeBlockFromColumn (x, y) {
+    removeBlockFromColumn(x, y) {
         const foundIndex = this.findBlockIndexByY(y);
         if (foundIndex > -1) {
             this.col.splice(foundIndex, 1);

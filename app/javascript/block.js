@@ -1,13 +1,13 @@
 import {COLOURS} from "./constants/colours";
 
 export class Block {
-    constructor (x, y) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
     }
 
-    render (colEl, blockClicked) {
+    render(colEl, blockClicked) {
         const id = `block_${this.x}x${this.y}`;
         const blockEl = document.createElement('div');
         blockEl.id = id;
