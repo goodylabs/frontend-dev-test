@@ -13,7 +13,6 @@ export class BlockColumn {
 
     render (colEl, blockClicked) {
         const removedHeight = document.createElement('div');
-
         removedHeight.id = `removed_height_${this.x}`;
         removedHeight.className = 'col-removed-space';
         colEl.appendChild(removedHeight);
@@ -37,7 +36,7 @@ export class BlockColumn {
         let foundIndex = -1;
         this.col.forEach((block, index) => {
             if(block.y === y) {
-                foundIndex = index;
+                return index;
             }
         });
         return foundIndex;
@@ -54,11 +53,15 @@ export class BlockColumn {
             const removedHeightElement = document.getElementById(`removed_height_${x}`);
             removedHeightElement.style.height = `${this.removedBlocks * 10}%`;
         }
-        this.updateYCoordinates();
     }
 
     getBlock(index) {
         return this.col[index] || null;
+    }
+
+    getBlockByY(y) {
+        const index = this.findBlockIndexByY(y);
+        return index === -1 ? null : this.col[index];
     }
 }
 
