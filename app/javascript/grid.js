@@ -1,6 +1,5 @@
 import {BlockColumn} from "./blockColumn";
-
-const MAX_X = 10;
+import {MAX_X, MAX_Y} from "./constants/gridSize";
 
 export class BlockGrid {
     constructor() {
@@ -39,7 +38,7 @@ export class BlockGrid {
     }
 
     checkIfBlockIsToRemove({x, y, colour}, deltax, deltay) {
-        if (x + deltax >= 0 && x + deltax <= 9 && y + deltay >= 0 && y + deltay <= 9) {
+        if (x + deltax >= 0 && x + deltax <= MAX_X - 1 && y + deltay >= 0 && y + deltay <= MAX_Y - 1) {
             const blockColumn = this.grid[x + deltax];
             const blockToCheck = blockColumn.getBlockByY(y + deltay);
             if (blockToCheck && blockToCheck.colour === colour) {

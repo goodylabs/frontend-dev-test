@@ -1,6 +1,5 @@
 import {Block} from './block';
-
-const MAX_Y = 10;
+import {MAX_Y} from "./constants/gridSize";
 
 export class BlockColumn {
     constructor(x) {
@@ -52,7 +51,7 @@ export class BlockColumn {
             columnElement.removeChild(blockElement);
             this.removedBlocks++;
             const removedHeightElement = document.getElementById(`removed_height_${x}`);
-            removedHeightElement.style.height = `${this.removedBlocks * 10}%`;
+            removedHeightElement.style.height = `${this.removedBlocks * 100 / MAX_Y}%`;
         }
     }
 
