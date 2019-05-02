@@ -50,17 +50,11 @@ export class BlockGrid {
 
     checkNeighbourBlocks(block) {
         for (let i = -1; i < 2; i++) {
-            switch (i) {
-                case -1:
-                    this.checkIfBlockIsToRemove(block, i, 0);
-                    break;
-                case 0:
-                    this.checkIfBlockIsToRemove(block, i, -1);
-                    this.checkIfBlockIsToRemove(block, i, 1);
-                    break;
-                case 1:
-                    this.checkIfBlockIsToRemove(block, i, 0);
-                    break;
+            if(i===0) {
+                this.checkIfBlockIsToRemove(block, i, -1);
+                this.checkIfBlockIsToRemove(block, i, 1);
+            } else {
+                this.checkIfBlockIsToRemove(block, i, 0);
             }
         }
     }
