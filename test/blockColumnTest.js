@@ -39,4 +39,14 @@ describe('BlockColumn', () => {
         assert.equal(blockChildrenAmount, MAX_Y, 'blocks rendered correctly');
         assert.equal(removedHeightChildrenAmount, 1, 'removed height div rendered correctly');
     });
+
+    it('should return index of block with given y', () => {
+        let testYCoords = [0, 1, 2];
+
+        testYCoords.forEach((y) => {
+            const column = new BlockColumn(0);
+            const blockIndex = column.findBlockIndexByY(y);
+            assert.equal(column.getBlock(blockIndex).y, y, 'correct index returned');
+        });
+    });
 });
