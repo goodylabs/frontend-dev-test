@@ -1,8 +1,8 @@
-import { BlockColumn } from '../app/javascript/blockColumn';
-import { MAX_Y } from '../app/javascript/constants/gridSize';
-import { assert } from 'chai';
+import {BlockColumn} from '../app/javascript/blockColumn';
+import {MAX_Y} from '../app/javascript/constants/gridSize';
+import {assert} from 'chai';
 
-let { describe, it } = window;
+let {describe, it} = window;
 
 describe('BlockColumn', () => {
 
@@ -15,5 +15,28 @@ describe('BlockColumn', () => {
             assert.equal(column.removedBlocks, 0, 'column has been initialized with no removed blocks');
             assert.equal(column.x, x, 'column has been initialized with proper x coordinate');
         });
+    });
+
+    it('should render correct block amount correctly', () => {
+        const id = 'col_0';
+        const colEl = document.createElement('div');
+        colEl.className = 'col';
+        colEl.id = id;
+        const mockedBlockedClickedFunction = () => {
+        };
+        const column = new BlockColumn(0);
+        column.render(colEl, mockedBlockedClickedFunction);
+        let removedHeightChildrenAmount = 0;
+        let blockChildrenAmount = 0;
+        for (let i = 0; i < colEl.children.length; i++) {
+            const children = colEl.children[i];
+            if (children.className === 'col-removed-space') {
+                removedHeightChildrenAmount++;
+            } else if (children.className === 'block') {
+                blockChildrenAmount++;
+            }
+        }
+        assert.equal(blockChildrenAmount, MAX_Y, 'blocks rendered correctly');
+        assert.equal(removedHeightChildrenAmount, 1, 'removed height div rendered correctly');
     });
 });
