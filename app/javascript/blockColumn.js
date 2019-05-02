@@ -42,7 +42,8 @@ export class BlockColumn {
         return foundIndex;
     }
 
-    removeBlockFromColumn(x, y) {
+    removeBlockFromColumn(y) {
+        const x = this.x;
         const foundIndex = this.findBlockIndexByY(y);
         if (foundIndex > -1) {
             this.col.splice(foundIndex, 1);

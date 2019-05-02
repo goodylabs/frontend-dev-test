@@ -27,7 +27,7 @@ export class BlockGrid {
     blockClicked(e, block) {
         this.updateYCoordinatesInGrid();
         const blockColumn = this.grid[block.x];
-        blockColumn.removeBlockFromColumn(block.x, block.y);
+        blockColumn.removeBlockFromColumn(block.y);
         this.checkNeighbourBlocks(block);
     }
 
@@ -42,7 +42,7 @@ export class BlockGrid {
             const blockColumn = this.grid[x + deltax];
             const blockToCheck = blockColumn.getBlockByY(y + deltay);
             if (blockToCheck && blockToCheck.colour === colour) {
-                blockColumn.removeBlockFromColumn(blockToCheck.x, blockToCheck.y);
+                blockColumn.removeBlockFromColumn(blockToCheck.y);
                 this.checkNeighbourBlocks(blockToCheck);
             }
         }
