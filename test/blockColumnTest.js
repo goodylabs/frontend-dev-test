@@ -49,4 +49,15 @@ describe('BlockColumn', () => {
             assert.equal(column.getBlock(blockIndex).y, y, 'correct index returned');
         });
     });
+
+    it('should return block with given y', () => {
+        let testYCoords = [0, 1, 2];
+
+        testYCoords.forEach((y) => {
+            const column = new BlockColumn(0);
+            const blockIndex = column.findBlockIndexByY(y);
+            const blockByY = column.getBlockByY(y);
+            assert.equal(column.getBlock(blockIndex).y, blockByY.y, 'correct block returned');
+        });
+    });
 });
