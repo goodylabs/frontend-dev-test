@@ -22,7 +22,7 @@ gulp.task("build", function () {
 
 gulp.task("buildtests", function () {
     browserify({
-        entries: ['test/tests.js']
+        entries: ['test/blockTest.js']
     })
     .on('error', function(err) { console.error(err); this.emit('end'); })
     .transform('babelify', {presets: ["es2015"]})

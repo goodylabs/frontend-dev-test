@@ -14,8 +14,8 @@ export class BlockGrid {
 
     render(el = document.querySelector('#gridEl')) {
         for (let x = 0; x < MAX_X; x++) {
-            let id = 'col_' + x;
-            let colEl = document.createElement('div');
+            const id = 'col_' + x;
+            const colEl = document.createElement('div');
             colEl.className = 'col';
             colEl.id = id;
             el.appendChild(colEl);
