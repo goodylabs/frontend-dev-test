@@ -7,7 +7,7 @@ let {describe, it} = window;
 describe('BlockColumn', () => {
     const mockedBlockedClickedFunction = () => {
     };
-    const findChildElements = (colEl) => {
+    const countChildElements = (colEl) => {
         let removedHeightChildrenAmount = 0;
         let blockChildrenAmount = 0;
         for (let i = 0; i < colEl.children.length; i++) {
@@ -38,7 +38,7 @@ describe('BlockColumn', () => {
         colEl.id = id;
         const column = new BlockColumn(0, colEl);
         column.render(mockedBlockedClickedFunction);
-        const {blockChildrenAmount, removedHeightChildrenAmount} = findChildElements(colEl);
+        const {blockChildrenAmount, removedHeightChildrenAmount} = countChildElements(colEl);
         assert.equal(blockChildrenAmount, MAX_Y, 'blocks rendered correctly');
         assert.equal(removedHeightChildrenAmount, 1, 'removed height div rendered correctly');
     });
@@ -74,7 +74,7 @@ describe('BlockColumn', () => {
         column.render(mockedBlockedClickedFunction);
         yCoordinates.forEach((y, index) => {
             column.removeBlockFromColumn(y);
-            const {blockChildrenAmount} = findChildElements(colEl);
+            const {blockChildrenAmount} = countChildElements(colEl);
             assert.equal(column.removedBlocks, 1 + index, 'correct removedBlocks amount returned');
             assert.equal(blockChildrenAmount, MAX_Y - 1 - index, 'correct blocks amount in document returned');
             assert.equal(column.col.length, MAX_Y - 1 - index, 'correct blocks amount in object returned');
@@ -90,7 +90,7 @@ describe('BlockColumn', () => {
         const column = new BlockColumn(x, colEl);
         column.render(mockedBlockedClickedFunction);
         column.removeBlockFromColumn(y);
-        const {blockChildrenAmount} = findChildElements(colEl);
+        const {blockChildrenAmount} = countChildElements(colEl);
         assert.equal(column.removedBlocks, 0, 'correct removedBlocks amount returned');
         assert.equal(blockChildrenAmount, MAX_Y, 'correct blocks amount in document returned');
         assert.equal(column.col.length, MAX_Y, 'correct blocks amount in object returned');
