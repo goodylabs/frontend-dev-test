@@ -6,13 +6,15 @@ export class BlockGrid {
         this.grid = [];
         this.gridEl = gridEl;
 
-        for (let x = 0; x < MAX_X; x++) {
-            const id = 'col_' + x;
-            const colEl = document.createElement('div');
-            colEl.className = 'col';
-            colEl.id = id;
-            this.gridEl.appendChild(colEl);
-            this.grid.push(new BlockColumn(x, colEl));
+        if (gridEl) {
+            for (let x = 0; x < MAX_X; x++) {
+                const id = 'col_' + x;
+                const colEl = document.createElement('div');
+                colEl.className = 'col';
+                colEl.id = id;
+                this.gridEl.appendChild(colEl);
+                this.grid.push(new BlockColumn(x, colEl));
+            }
         }
 
         this.blockClicked = this.blockClicked.bind(this);
@@ -21,7 +23,9 @@ export class BlockGrid {
     render() {
         for (let x = 0; x < MAX_X; x++) {
             const column = this.grid[x];
-            column.render(this.blockClicked);
+            if (column) {
+                column.render(this.blockClicked);
+            }
         }
     }
 
