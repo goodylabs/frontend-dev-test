@@ -79,4 +79,19 @@ describe('BlockColumn', () => {
             assert.equal(column.col.length, MAX_Y - 1 - index, 'correct blocks amount in object returned');
         });
     });
+
+    it('should not remove block from column when does not contain column with y coordinate', () => {
+        const x = 0;
+        const y = MAX_Y + 3;
+        const colEl = document.createElement('div');
+        colEl.className = 'col';
+        colEl.id = 'col_' + x;
+        const column = new BlockColumn(x, colEl);
+        column.render(mockedBlockedClickedFunction);
+        column.removeBlockFromColumn(y);
+        const {blockChildrenAmount} = findChildElements(colEl);
+        assert.equal(column.removedBlocks, 0, 'correct removedBlocks amount returned');
+        assert.equal(blockChildrenAmount, MAX_Y, 'correct blocks amount in document returned');
+        assert.equal(column.col.length, MAX_Y, 'correct blocks amount in object returned');
+    });
 });
