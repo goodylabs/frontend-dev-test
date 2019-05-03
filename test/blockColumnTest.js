@@ -5,7 +5,8 @@ import {assert} from 'chai';
 let {describe, it} = window;
 
 describe('BlockColumn', () => {
-    const mockedBlockedClickedFunction = () => {};
+    const mockedBlockedClickedFunction = () => {
+    };
     const findChildElements = (colEl) => {
         let removedHeightChildrenAmount = 0;
         let blockChildrenAmount = 0;
@@ -93,5 +94,23 @@ describe('BlockColumn', () => {
         assert.equal(column.removedBlocks, 0, 'correct removedBlocks amount returned');
         assert.equal(blockChildrenAmount, MAX_Y, 'correct blocks amount in document returned');
         assert.equal(column.col.length, MAX_Y, 'correct blocks amount in object returned');
+    });
+
+    it('should update all y coordinates', () => {
+        const x = 0;
+        const y = 3;
+        const colEl = document.createElement('div');
+        colEl.className = 'col';
+        colEl.id = 'col_' + x;
+        const column = new BlockColumn(x, colEl);
+        column.render(mockedBlockedClickedFunction);
+        for (let i = 0; i < 3; i++) {
+            column.removeBlockFromColumn(y);
+            column.updateYCoordinates();
+            const removedBlockInTheColumn = column.getBlockByY(i);
+            const removedBlockInTheColumnElement = column.columnEl.querySelector(`#block_${x}x${i}`);
+            assert.isNull(removedBlockInTheColumn, `block in y ${i} does not exist`);
+            assert.isNull(removedBlockInTheColumnElement, `block element in y ${i} does not exist`);
+        }
     });
 });
