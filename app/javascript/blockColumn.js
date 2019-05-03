@@ -27,7 +27,7 @@ export class BlockColumn {
         const blocksAmount = this.col.length;
         for (let i = 0; i < blocksAmount; i++) {
             const block = this.col[blocksAmount - 1 - i];
-            const blockElement = document.getElementById(`block_${block.x}x${block.y}`);
+            const blockElement = this.columnEl.querySelector(`#block_${block.x}x${block.y}`);
             block.y = lastIndex - i;
             blockElement.id = `block_${block.x}x${block.y}`;
         }
