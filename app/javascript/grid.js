@@ -2,25 +2,26 @@ import {BlockColumn} from "./blockColumn";
 import {MAX_X, MAX_Y} from "./constants/gridSize";
 
 export class BlockGrid {
-    constructor() {
+    constructor(gridEl) {
         this.grid = [];
+        this.gridEl = gridEl;
 
-        for (let x = 0; x < MAX_X; x++) {
-            this.grid.push(new BlockColumn(x));
-        }
-
-        this.blockClicked = this.blockClicked.bind(this);
-    }
-
-    render(el = document.querySelector('#gridEl')) {
         for (let x = 0; x < MAX_X; x++) {
             const id = 'col_' + x;
             const colEl = document.createElement('div');
             colEl.className = 'col';
             colEl.id = id;
-            el.appendChild(colEl);
+            this.gridEl.appendChild(colEl);
+            this.grid.push(new BlockColumn(x, colEl));
+        }
+
+        this.blockClicked = this.blockClicked.bind(this);
+    }
+
+    render() {
+        for (let x = 0; x < MAX_X; x++) {
             const column = this.grid[x];
-            column.render(colEl, this.blockClicked);
+            column.render(this.blockClicked);
         }
     }
 
@@ -50,7 +51,7 @@ export class BlockGrid {
 
     checkNeighbourBlocks(block) {
         for (let i = -1; i < 2; i++) {
-            if(i===0) {
+            if (i === 0) {
                 this.checkIfBlockIsToRemove(block, i, -1);
                 this.checkIfBlockIsToRemove(block, i, 1);
             } else {
@@ -60,4 +61,4 @@ export class BlockGrid {
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => new BlockGrid().render());
+window.addEventListener('DOMContentLoaded', () => new BlockGrid(document.querySelector('#gridEl')).render());

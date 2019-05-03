@@ -2,22 +2,23 @@ import {Block} from './block';
 import {MAX_Y} from "./constants/gridSize";
 
 export class BlockColumn {
-    constructor(x) {
+    constructor(x, columnEl) {
         this.col = [];
         this.x = x;
         this.removedBlocks = 0;
+        this.columnEl = columnEl;
         for (let y = 0; y < MAX_Y; y++) {
-            this.col.push(new Block(x, y));
+            this.col.push(new Block(x, y, this.columnEl));
         }
     }
 
-    render(colEl, blockClicked) {
+    render(blockClicked) {
         const removedHeight = document.createElement('div');
         removedHeight.id = `removed_height_${this.x}`;
         removedHeight.className = 'col-removed-space';
-        colEl.appendChild(removedHeight);
+        this.columnEl.appendChild(removedHeight);
         this.col.forEach((block) => {
-            block.render(colEl, blockClicked);
+            block.render(blockClicked);
         })
     }
 
