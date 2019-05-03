@@ -48,11 +48,11 @@ export class BlockColumn {
         const foundIndex = this.findBlockIndexByY(y);
         if (foundIndex > -1) {
             this.col.splice(foundIndex, 1);
-            const columnElement = document.getElementById(`col_${x}`);
-            const blockElement = document.getElementById(`block_${x}x${y}`);
+            const columnElement = this.columnEl;
+            const blockElement = columnElement.querySelector(`#block_${x}x${y}`);
             columnElement.removeChild(blockElement);
             this.removedBlocks++;
-            const removedHeightElement = document.getElementById(`removed_height_${x}`);
+            const removedHeightElement = columnElement.querySelector(`#removed_height_${x}`);
             removedHeightElement.style.height = `${this.removedBlocks * 100 / MAX_Y}%`;
         }
     }
