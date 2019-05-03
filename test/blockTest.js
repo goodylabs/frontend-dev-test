@@ -4,9 +4,10 @@ import {assert} from 'chai';
 
 let {describe, it} = window;
 
+const mockedBlockedClickedFunction = () => {
+};
+
 describe('Block', () => {
-    const mockedBlockedClickedFunction = () => {
-    };
     it('should be created with correctly parameters', () => {
         let testCoords = [
             [1, 2],
@@ -40,7 +41,5 @@ describe('Block', () => {
             });
             assert.equal(colEl.children.length, blockArray.length, 'block rendered correctly');
         });
-
-    })
-
+    });
 });

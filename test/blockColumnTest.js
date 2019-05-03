@@ -4,22 +4,24 @@ import {assert} from 'chai';
 
 let {describe, it} = window;
 
-describe('BlockColumn', () => {
-    const mockedBlockedClickedFunction = () => {
-    };
-    const countChildElements = (colEl) => {
-        let removedHeightChildrenAmount = 0;
-        let blockChildrenAmount = 0;
-        for (let i = 0; i < colEl.children.length; i++) {
-            const children = colEl.children[i];
-            if (children.className === 'col-removed-space') {
-                removedHeightChildrenAmount++;
-            } else if (children.className === 'block') {
-                blockChildrenAmount++;
-            }
+const mockedBlockedClickedFunction = () => {
+};
+
+const countChildElements = (colEl) => {
+    let removedHeightChildrenAmount = 0;
+    let blockChildrenAmount = 0;
+    for (let i = 0; i < colEl.children.length; i++) {
+        const children = colEl.children[i];
+        if (children.className === 'col-removed-space') {
+            removedHeightChildrenAmount++;
+        } else if (children.className === 'block') {
+            blockChildrenAmount++;
         }
-        return {removedHeightChildrenAmount, blockChildrenAmount};
-    };
+    }
+    return {removedHeightChildrenAmount, blockChildrenAmount};
+};
+
+describe('BlockColumn', () => {
     it('should be created with correctly parameters', () => {
         let testXCoords = [0, 1, 2];
 
