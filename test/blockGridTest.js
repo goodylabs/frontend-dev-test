@@ -3,8 +3,6 @@ import {BlockGrid} from "../app/javascript/grid";
 import {MAX_X, MAX_Y} from "../app/javascript/constants/gridSize";
 import {countChildElements} from './utils/countChildElements';
 import {initializeBlockGrid} from "./utils/initializeBlockGrid";
-import {Block} from "../app/javascript/block";
-import {COLOURS} from "../app/javascript/constants/colours";
 
 let {describe, it} = window;
 
@@ -18,7 +16,7 @@ describe('BlockGrid', () => {
         assert.equal(columnChildrenAmount, MAX_X, 'grid has correct amount of column elements');
     });
 
-    it('should render block correctly', () => {
+    it('should render blocks correctly', () => {
         const gridEl = document.createElement('div');
         gridEl.id = '#gridEl';
         const grid = new BlockGrid(gridEl);
