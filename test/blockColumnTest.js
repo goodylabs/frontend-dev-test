@@ -1,24 +1,11 @@
 import {BlockColumn} from '../app/javascript/blockColumn';
 import {MAX_Y} from '../app/javascript/constants/gridSize';
 import {assert} from 'chai';
+import {countChildElements} from './utils/countChildElements';
 
 let {describe, it} = window;
 
 const mockedBlockedClickedFunction = () => {
-};
-
-const countChildElements = (colEl) => {
-    let removedHeightChildrenAmount = 0;
-    let blockChildrenAmount = 0;
-    for (let i = 0; i < colEl.children.length; i++) {
-        const children = colEl.children[i];
-        if (children.className === 'col-removed-space') {
-            removedHeightChildrenAmount++;
-        } else if (children.className === 'block') {
-            blockChildrenAmount++;
-        }
-    }
-    return {removedHeightChildrenAmount, blockChildrenAmount};
 };
 
 describe('BlockColumn', () => {
@@ -40,7 +27,8 @@ describe('BlockColumn', () => {
         colEl.id = id;
         const column = new BlockColumn(0, colEl);
         column.render(mockedBlockedClickedFunction);
-        const {blockChildrenAmount, removedHeightChildrenAmount} = countChildElements(colEl);
+        const blockChildrenAmount = countChildElements(colEl, 'block');
+        const removedHeightChildrenAmount = countChildElements(colEl, 'col-removed-space');
         assert.equal(blockChildrenAmount, MAX_Y, 'blocks rendered correctly');
         assert.equal(removedHeightChildrenAmount, 1, 'removed height div rendered correctly');
     });
@@ -76,7 +64,7 @@ describe('BlockColumn', () => {
         column.render(mockedBlockedClickedFunction);
         yCoordinates.forEach((y, index) => {
             column.removeBlockFromColumn(y);
-            const {blockChildrenAmount} = countChildElements(colEl);
+            const blockChildrenAmount = countChildElements(colEl, 'block');
             assert.equal(column.removedBlocks, 1 + index, 'correct removedBlocks amount returned');
             assert.equal(blockChildrenAmount, MAX_Y - 1 - index, 'correct blocks amount in document returned');
             assert.equal(column.col.length, MAX_Y - 1 - index, 'correct blocks amount in object returned');
@@ -92,7 +80,7 @@ describe('BlockColumn', () => {
         const column = new BlockColumn(x, colEl);
         column.render(mockedBlockedClickedFunction);
         column.removeBlockFromColumn(y);
-        const {blockChildrenAmount} = countChildElements(colEl);
+        const blockChildrenAmount = countChildElements(colEl, 'block');
         assert.equal(column.removedBlocks, 0, 'correct removedBlocks amount returned');
         assert.equal(blockChildrenAmount, MAX_Y, 'correct blocks amount in document returned');
         assert.equal(column.col.length, MAX_Y, 'correct blocks amount in object returned');
