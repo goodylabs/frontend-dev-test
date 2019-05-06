@@ -24,12 +24,9 @@ describe('BlockGrid', () => {
         const grid = new BlockGrid(gridEl);
         grid.render();
         grid.grid.forEach((column) => {
-           const blockChildrenAmount = countChildElements(column.columnEl, 'block');
+            const blockChildrenAmount = countChildElements(column.columnEl, 'block');
             assert.equal(blockChildrenAmount, MAX_Y, 'grid has correct amount of blocks');
         });
-        const gridEl2 = document.createElement('div');
-        gridEl2.id = '#gridEl';
-        const testGrid = initializeBlockGrid(3, 3, 2, 2, gridEl2);
     });
 
     it('should remove single block from column', () => {
@@ -50,6 +47,48 @@ describe('BlockGrid', () => {
                 assert.isNull(columnWithRemovedBlock.getBlockByY(testCoord[1]), 'column has no block with removed y');
             }
         });
+    });
 
+    it('should remove all connected blocks from the grid', () => {
+        let testParameters = [
+            {
+                blocksConnectedInColumn: 2,
+                blocksConnectedInRow: 2,
+                columnOffset: 2,
+                rowOffset: 2,
+            },
+            {
+                blocksConnectedInColumn: 1,
+                blocksConnectedInRow: 3,
+                columnOffset: 1,
+                rowOffset: 0,
+            },
+            {
+                blocksConnectedInColumn: 3,
+                blocksConnectedInRow: 1,
+                columnOffset: 0,
+                rowOffset: 3,
+            }
+        ];
+        testParameters.forEach((parameters) => {
+            const gridEl = document.createElement('div');
+            gridEl.id = 'gridEl';
+            const testGrid = initializeBlockGrid(parameters.blocksConnectedInColumn, parameters.blocksConnectedInRow, parameters.columnOffset, parameters.rowOffset, gridEl);
+            for (let i = parameters.columnOffset; i < parameters.columnOffset + parameters.blocksConnectedInRow; i++) {
+                for (let j = parameters.rowOffset; j < parameters.rowOffset + parameters.blocksConnectedInColumn; j++) {
+                    const copiedGrid = Object.assign({}, testGrid);
+                    const block = copiedGrid.grid[i].getBlockByY(j);
+                    if (block) {
+                        copiedGrid.blockClicked(null, block);
+                        for (let k = parameters.columnOffset; k < parameters.columnOffset + parameters.blocksConnectedInRow; k++) {
+                            for (let l = parameters.rowOffset; l < parameters.rowOffset + parameters.blocksConnectedInColumn; l++) {
+                                assert.equal(copiedGrid.grid[k].removedBlocks, parameters.blocksConnectedInColumn, 'column has one removed block');
+                                assert.isNull(copiedGrid.grid[k].getBlockByY(l), 'column has no block with removed y');
+                            }
+                        }
+                    }
+                }
+            }
+        });
     });
 });

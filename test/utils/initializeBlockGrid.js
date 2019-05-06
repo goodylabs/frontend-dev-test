@@ -7,7 +7,7 @@ export const initializeBlockGrid = (blocksConnectedInColumn, blocksConnectedInRo
         grid.render();
         grid.grid.forEach((column, columnIndex) => {
             column.col.forEach((block, blockIndex) => {
-                if (columnIndex >= columnOffset && columnIndex < columnOffset + blocksConnectedInColumn && blockIndex >= rowOffset && blockIndex < rowOffset + blocksConnectedInRow) {
+                if (columnIndex >= columnOffset && columnIndex < columnOffset + blocksConnectedInRow && blockIndex >= rowOffset && blockIndex < rowOffset + blocksConnectedInColumn) {
                     block.colour = COLOURS[0];
                 }
                 else {
