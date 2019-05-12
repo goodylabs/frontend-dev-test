@@ -103,7 +103,7 @@ export class BlockGrid {
 
                     findTest(colourArrayBool, block.x, block.y, colourArray2, this.grid);
 
-                    console.log(xLength);
+                    console.log(colourArray2);
 
                     for(let xIter = 0; xIter < MAX_X; xIter++) {
                         for(let yIter = 0; yIter < xLength[xIter]; yIter++) {
@@ -141,7 +141,7 @@ export class BlockGrid {
                         xLength[xIter] -= count;
                     }
 
-                    console.log(xLength);
+                    console.log(colourArray2);
 
                     /*console.log(this.grid[block.x][block.y]);
                     console.log(this.grid[block.x+1][block.y]);
