@@ -51,7 +51,12 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
+        let blockId = `block_${block.x}x${block.y}`;
+        let blockToRemove = document.getElementById(blockId);
+        blockToRemove.className = 'removetrack';
+        
         console.log(e, block);
+        console.log("remove block x="+block.x+" y="+block.y);
     }
 }
 
