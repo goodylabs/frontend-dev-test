@@ -8,6 +8,7 @@ export class Block {
         this.y = y;
         this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
     }
+
 }
 
 export class BlockGrid {
@@ -50,24 +51,44 @@ export class BlockGrid {
         return this;
     }
 
+
+
     blockClicked (e, block) {
         let blockId = `block_${block.x}x${block.y}`;
         let blockToRemove = document.getElementById(blockId);
         blockToRemove.className = 'removetrack';
-        for (let x = 0; x < MAX_X; x++) {
-            for (let y = 0 ; y < MAX_Y; y++) {
-                let blockIdtoCheck = `block_${x}x${y}`;
-                let blockToCheck = document.getElementById(blockIdtoCheck);
-                console.log(blockToCheck.style.background+" "+block.colour);
-                if(blockToCheck.style.background==block.colour){
-                    blockToCheck.className = 'removetrack';
-                }
-
-            }
-        }
+        checkBlock(block.x,block.y,block.colour);
         
         console.log(e, block);
         console.log("remove block x="+block.x+" y="+block.y);
+    }
+    
+}
+
+function checkCoordinates(x,x1){
+    var resoult=x-x1;
+    if(resoult==0||resoult==-1||resoult==1){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+function checkBlock(blockx,blocky,colour){
+    for (let x = 0; x < MAX_X; x++) {
+        for (let y = MAX_Y-1 ; y >= 0; y--) {
+            let blockIdtoCheck = `block_${x}x${y}`;
+            let blockToCheck = document.getElementById(blockIdtoCheck);
+            if(blockToCheck!=null){
+                if(blockToCheck.style.background==colour&&checkCoordinates(blockx,x)==true&&checkCoordinates(blocky,y)==true){
+                    let colour=blockToCheck.style.background;
+                    blockToCheck.className = 'removetrack';
+                    blockx=x;
+                    blocky=y;
+                }
+            }
+        }
+
     }
 }
 
