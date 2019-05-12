@@ -54,6 +54,17 @@ export class BlockGrid {
         let blockId = `block_${block.x}x${block.y}`;
         let blockToRemove = document.getElementById(blockId);
         blockToRemove.className = 'removetrack';
+        for (let x = 0; x < MAX_X; x++) {
+            for (let y = 0 ; y < MAX_Y; y++) {
+                let blockIdtoCheck = `block_${x}x${y}`;
+                let blockToCheck = document.getElementById(blockIdtoCheck);
+                console.log(blockToCheck.style.background+" "+block.colour);
+                if(blockToCheck.style.background==block.colour){
+                    blockToCheck.className = 'removetrack';
+                }
+
+            }
+        }
         
         console.log(e, block);
         console.log("remove block x="+block.x+" y="+block.y);
