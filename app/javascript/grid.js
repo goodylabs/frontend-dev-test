@@ -1,41 +1,32 @@
-var selected = [];
-function nfinder (x,y,c){
-var id = "block_"+x+"x"+y;
-//console.log(document.getElementById("block_"+x+"x"+y).outerHTML);
-var myElem = document.getElementById(id);
-if ((myElem !== null) && (myElem.style.backgroundColor == c) && ( selected.indexOf(id) == -1 )) {
-
-console.log("Working on block_"+x+"x"+y);
-selected.push(id); 
-
-//nfinder (x-1,y+1,c) 
-nfinder (x,y+1,c) //Top
-//nfinder (x+1,y+1,c)
-
-nfinder (x-1,y,c) //Left
-nfinder (x+1,y,c) //Right
-
-//nfinder (x-1,y-1,c)
-nfinder (x,y-1,c) //Bottom
-//nfinder (x+1,y-1,c)
-}
-}
-
-function recalculate_id (){
-//console.log(document.getElementById("col_0").getElementsByClassName("block").length);
-var childCols = document.getElementById("gridEl").getElementsByClassName("col");
-for( var j=0; j< childCols.length; j++ )
+let selected = [];
+function nfinder(x,y,c) //Finds connected elements vith use of recursion
 	{
-	var childDivs = document.getElementById("col_"+j).getElementsByClassName("block");
-	//document.getElementsByClassName("div-inner").length
-	for( var i=0; i< childDivs.length; i++ )
+	let id = "block_"+x+"x"+y;
+	let myElem = document.getElementById(id);
+	if ((myElem !== null) && (myElem.style.backgroundColor == c) && (selected.indexOf(id) == -1))
 		{
-		//console.log(childDivs[i]);
-		var tmp = 10-childDivs.length+i;
-		childDivs[i].id = "block_"+j+"x"+ tmp;
+		selected.push(id); //Add to list
+
+		nfinder(x,y+1,c); //Run for Top
+		nfinder(x-1,y,c); //Run for Left
+		nfinder(x+1,y,c); //Run for Right
+		nfinder(x,y-1,c); //Run for Bottom
 		}
 	}
-}
+
+function recalculate_id() //Recalculate indexes to compensate for movement of blocks
+	{
+	let childCols = document.getElementById("gridEl").getElementsByClassName("col");
+	for( let j=0 ; j<childCols.length ; j++ )
+		{
+		let childDivs = document.getElementById("col_"+j).getElementsByClassName("block");
+		for( let i=0 ; i<childDivs.length ; i++ )
+			{
+			let tmp = 10-childDivs.length+i;
+			childDivs[i].id = "block_"+j+"x"+ tmp;
+			}
+		}
+	}
 
 
 
@@ -95,26 +86,22 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
-        //console.log(document.getElementById(e.target.id));
-	var cut_me = e.target.id
-	var x_in = parseInt (cut_me.substring(6, 7), 10);
-	var y_in = parseInt (cut_me.substring(8, 9), 10);
-	var c_in = document.getElementById(e.target.id).style.backgroundColor
+        
+	let cut_me = e.target.id
+	let x_in = parseInt (cut_me.substring(6, 7), 10);//Get x parameter
+	let y_in = parseInt (cut_me.substring(8, 9), 10);//Get y parameter
+	let c_in = document.getElementById(e.target.id).style.backgroundColor//Get colour parameter
 
-	console.log(x_in + " " + y_in + " " + c_in);	
-		
-	
 	selected = []; //Clear before each use
-	//nfinder(block.x,block.y,block.colour);//Find and mark
 	nfinder(x_in,y_in,c_in);//Find and mark
-	console.log(selected.length );
-	if (selected.length > 1){
-	selected.forEach(function(entry) {
-	document.getElementById(entry).outerHTML = ""; //Remove marked
-	});
-	}
-	//Recalculate id
-	recalculate_id();
+	if (selected.length > 1)//If any marked remove
+		{
+		selected.forEach(function(entry) 
+			{
+			document.getElementById(entry).outerHTML = ""; //Remove marked
+			});
+		}
+	recalculate_id();//Recalculate id !todo(recalculate only if any were removed)
 	
     }
 }
