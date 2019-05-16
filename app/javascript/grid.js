@@ -1,8 +1,8 @@
 let selected = [];
 function nfinder(x,y,c) //Finds connected elements vith use of recursion
 	{
-	let id = "block_"+x+"x"+y;
-	let myElem = document.getElementById(id);
+	const id = "block_"+x+"x"+y;
+	const myElem = document.getElementById(id);
 	if ((myElem !== null) && (myElem.style.backgroundColor == c) && (selected.indexOf(id) == -1))
 		{
 		selected.push(id); //Add to list
@@ -16,13 +16,13 @@ function nfinder(x,y,c) //Finds connected elements vith use of recursion
 
 function recalculate_id() //Recalculate indexes to compensate for movement of blocks
 	{
-	let childCols = document.getElementById("gridEl").getElementsByClassName("col");
+	const childCols = document.getElementById("gridEl").getElementsByClassName("col");
 	for( let j=0 ; j<childCols.length ; j++ )
 		{
-		let childDivs = document.getElementById("col_"+j).getElementsByClassName("block");
+		const childDivs = document.getElementById("col_"+j).getElementsByClassName("block");
 		for( let i=0 ; i<childDivs.length ; i++ )
 			{
-			let tmp = 10-childDivs.length+i;
+			const tmp = 10-childDivs.length+i;
 			childDivs[i].id = "block_"+j+"x"+ tmp;
 			}
 		}
@@ -87,10 +87,10 @@ export class BlockGrid {
 
     blockClicked (e, block) {
         
-	let cut_me = e.target.id
-	let x_in = parseInt (cut_me.substring(6, 7), 10);//Get x parameter
-	let y_in = parseInt (cut_me.substring(8, 9), 10);//Get y parameter
-	let c_in = document.getElementById(e.target.id).style.backgroundColor//Get colour parameter
+	const cut_me = e.target.id
+	const x_in = parseInt (cut_me.substring(6, 7), 10);//Get x parameter
+	const y_in = parseInt (cut_me.substring(8, 9), 10);//Get y parameter
+	const c_in = document.getElementById(e.target.id).style.backgroundColor//Get colour parameter
 
 	selected = []; //Clear before each use
 	nfinder(x_in,y_in,c_in);//Find and mark
@@ -100,8 +100,9 @@ export class BlockGrid {
 			{
 			document.getElementById(entry).outerHTML = ""; //Remove marked
 			});
+		recalculate_id();//Recalculate id
 		}
-	recalculate_id();//Recalculate id !todo(recalculate only if any were removed)
+	
 	
     }
 }
