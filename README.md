@@ -8,7 +8,7 @@ $ open http://localhost:9100/
 
 #### Task:
 
-Implement blockClicked to remove (or hide) all blocks of the same colour that are connected to the target element then allow the blocks above the removed to fall down (similar to Tetris but you should click a block to have connected blocks removed).
+Implement blockClicked to remove (or hide) the target element and all blocks of the same colour that are connected to the target element then allow the blocks above the removed to fall down (similar to Tetris but you should click a block to have connected blocks removed).
 
 E.g.,
 
