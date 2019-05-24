@@ -60,10 +60,18 @@ export class BlockGrid {
         if (block.colour == colourToRemove && sameColour.indexOf(block) < 0) {
             sameColour.push(block);
 
-            this.findSameColourElements(this.grid[block.x + 1][block.y], colourToRemove, sameColour)
-            this.findSameColourElements(this.grid[block.x - 1][block.y], colourToRemove, sameColour)
-            this.findSameColourElements(this.grid[block.x][block.y + 1], colourToRemove, sameColour)
-            this.findSameColourElements(this.grid[block.x][block.y - 1], colourToRemove, sameColour)
+            if (block.x != 9) {
+                this.findSameColourElements(this.grid[block.x + 1][block.y], colourToRemove, sameColour)
+            }
+            if (block.x != 0) {
+                this.findSameColourElements(this.grid[block.x - 1][block.y], colourToRemove, sameColour)
+            }
+            if (block.y != 9) {
+                this.findSameColourElements(this.grid[block.x][block.y + 1], colourToRemove, sameColour)
+            }
+            if (block.y != 0) {
+                this.findSameColourElements(this.grid[block.x][block.y - 1], colourToRemove, sameColour)
+            }
         }
     }
 }
