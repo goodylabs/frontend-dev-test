@@ -3,7 +3,7 @@ const MAX_X = 10;
 const MAX_Y = 10;
 
 export class Block {
-    constructor (x, y) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
@@ -11,7 +11,7 @@ export class Block {
 }
 
 export class BlockGrid {
-    constructor () {
+    constructor() {
         this.grid = [];
 
         for (let x = 0; x < MAX_X; x++) {
@@ -26,7 +26,7 @@ export class BlockGrid {
         return this;
     }
 
-    render (el = document.querySelector('#gridEl')) {
+    render(el = document.querySelector('#gridEl')) {
         for (let x = 0; x < MAX_X; x++) {
             let id = 'col_' + x;
             let colEl = document.createElement('div');
@@ -50,8 +50,21 @@ export class BlockGrid {
         return this;
     }
 
-    blockClicked (e, block) {
-        console.log(e, block);
+    blockClicked(e, block) {
+        const sameColour = [];
+        this.findSameColourElements(block, block.colour, sameColour);
+        console.log(sameColour.length, sameColour);
+    }
+
+    findSameColourElements(block, colourToRemove, sameColour) {
+        if (block.colour == colourToRemove && sameColour.indexOf(block) < 0) {
+            sameColour.push(block);
+
+            this.findSameColourElements(this.grid[block.x + 1][block.y], colourToRemove, sameColour)
+            this.findSameColourElements(this.grid[block.x - 1][block.y], colourToRemove, sameColour)
+            this.findSameColourElements(this.grid[block.x][block.y + 1], colourToRemove, sameColour)
+            this.findSameColourElements(this.grid[block.x][block.y - 1], colourToRemove, sameColour)
+        }
     }
 }
 
