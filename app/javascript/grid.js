@@ -27,6 +27,9 @@ export class BlockGrid {
     }
 
     render(el = document.querySelector('#gridEl')) {
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
         for (let x = 0; x < MAX_X; x++) {
             let id = 'col_' + x;
             let colEl = document.createElement('div');
@@ -35,14 +38,20 @@ export class BlockGrid {
             el.appendChild(colEl);
 
             for (let y = MAX_Y - 1; y >= 0; y--) {
-                let block = this.grid[x][y],
-                    id = `block_${x}x${y}`,
-                    blockEl = document.createElement('div');
+                const block = this.grid[x][y];
+
+                const id = `block_${x}x${y}`;
+                const blockEl = document.createElement('div');
 
                 blockEl.id = id;
                 blockEl.className = 'block';
-                blockEl.style.background = block.colour;
-                blockEl.addEventListener('click', (evt) => this.blockClicked(evt, block));
+                if (block) {
+                    blockEl.style.background = block.colour;
+                    blockEl.addEventListener('click', (evt) => this.blockClicked(evt, block));
+                } else {
+                    blockEl.style.background = 'gray';
+                }
+
                 colEl.appendChild(blockEl);
             }
         }
@@ -53,20 +62,41 @@ export class BlockGrid {
     blockClicked(e, block) {
         const sameColour = [];
         this.findSameColourElements(block, block.colour, sameColour);
-        console.log(sameColour.length, sameColour);
+
+        sameColour.forEach(element => {
+            this.grid[element.x][element.y] = null;
+        });
+
+        const cols = new Set(sameColour.map(block => block.x));
+
+        for (const col of cols) {
+            for (let y = 0; y < MAX_Y; y++) {
+                if (this.grid[col][y] === null) {
+                    for (let y2 = y + 1; y2 < MAX_Y; y2++) {
+                        if (this.grid[col][y2]) {
+                            this.grid[col][y] = this.grid[col][y2];
+                            this.grid[col][y2] = null;
+                            this.grid[col][y].y = y;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        this.render();
     }
 
     findSameColourElements(block, colourToRemove, sameColour) {
-        if (block.colour == colourToRemove && sameColour.indexOf(block) < 0) {
+        if (block !== null && block.colour == colourToRemove && sameColour.indexOf(block) < 0) {
             sameColour.push(block);
 
-            if (block.x != 9) {
+            if (block.x != MAX_X - 1) {
                 this.findSameColourElements(this.grid[block.x + 1][block.y], colourToRemove, sameColour)
             }
             if (block.x != 0) {
                 this.findSameColourElements(this.grid[block.x - 1][block.y], colourToRemove, sameColour)
             }
-            if (block.y != 9) {
+            if (block.y != MAX_Y - 1) {
                 this.findSameColourElements(this.grid[block.x][block.y + 1], colourToRemove, sameColour)
             }
             if (block.y != 0) {
