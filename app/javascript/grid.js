@@ -44,6 +44,7 @@ export class BlockGrid {
                 blockEl.style.background = block.colour;
                 blockEl.addEventListener('click', (evt) => this.blockClicked(evt, block));
                 colEl.appendChild(blockEl);
+                // blockEl.textContent = y + x * MAX_X;
             }
         }
 
@@ -51,7 +52,115 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
-        console.log(e, block);
+    //console.log(e, block);
+    // multi array
+    //console.log(this.grid);
+
+    document.querySelector("#gridEl").innerHTML = "";
+    
+        const clickedBlock = block.colour;
+        // for simple ONE block
+        this.grid[block.x][block.y].colour = "gray";
+    
+        let success;
+        const nearestBlocks = [];
+        const grid = this.grid;
+        if (clickedBlock != "gray") {
+          do {
+            success = false;
+            if (
+              block.y + 1 < MAX_Y &&
+              grid[block.x][block.y + 1].colour == clickedBlock
+            ) {
+              grid[block.x][block.y + 1].colour = "gray";
+              nearestBlocks.push({ x: block.x, y: block.y + 1 });
+              success = true;
+            }
+            if (
+              block.y - 1 >= 0 &&
+              grid[block.x][block.y - 1].colour == clickedBlock
+            ) {
+              grid[block.x][block.y - 1].colour = "gray";
+              nearestBlocks.push({ x: block.x, y: block.y - 1 });
+              success = true;
+            }
+            if (
+              block.x + 1 < MAX_X &&
+              grid[block.x + 1][block.y].colour == clickedBlock
+            ) {
+              grid[block.x + 1][block.y].colour = "gray";
+              nearestBlocks.push({ x: block.x + 1, y: block.y });
+              success = true;
+            }
+            if (
+              block.x - 1 >= 0 &&
+              grid[block.x - 1][block.y].colour == clickedBlock
+            ) {
+              grid[block.x - 1][block.y].colour = "gray";
+              nearestBlocks.push({ x: block.x - 1, y: block.y });
+              success = true;
+            }
+            nearestBlocks.forEach(nearestBlock => {
+              if (
+                nearestBlock.y + 1 < MAX_Y &&
+                grid[nearestBlock.x][nearestBlock.y + 1].colour == clickedBlock
+              ) {
+                grid[nearestBlock.x][nearestBlock.y + 1].colour = "gray";
+                nearestBlocks.push({ x: nearestBlock.x, y: nearestBlock.y + 1 });
+                success = true;
+              }
+              if (
+                nearestBlock.y - 1 >= 0 &&
+                grid[nearestBlock.x][nearestBlock.y - 1].colour == clickedBlock
+              ) {
+                grid[nearestBlock.x][nearestBlock.y - 1].colour = "gray";
+                nearestBlocks.push({ x: nearestBlock.x, y: nearestBlock.y - 1 });
+                success = true;
+              }
+              if (
+                nearestBlock.x + 1 < MAX_X &&
+                grid[nearestBlock.x + 1][nearestBlock.y].colour == clickedBlock
+              ) {
+                grid[nearestBlock.x + 1][nearestBlock.y].colour = "gray";
+                nearestBlocks.push({ x: nearestBlock.x + 1, y: nearestBlock.y });
+                success = true;
+              }
+              if (
+                nearestBlock.x - 1 >= 0 &&
+                grid[nearestBlock.x - 1][nearestBlock.y].colour == clickedBlock
+              ) {
+                grid[nearestBlock.x - 1][nearestBlock.y].colour = "gray";
+                nearestBlocks.push({ x: nearestBlock.x - 1, y: nearestBlock.y });
+                success = true;
+              }
+            });
+          } while (success == true);
+        }
+
+        const newGrid = [];
+       
+        for (let x = 0; x < MAX_X; x++) {
+          newGrid[x] = [];
+          for (let y = 0; y < MAX_Y; y++) {
+            if (grid[x][y].colour != "gray") {
+              newGrid[x].push({
+                colour: grid[x][y].colour, 
+                x: x,
+                y: newGrid[x].length
+              });
+            }
+          }
+          for (let j = newGrid[x].length; j < MAX_Y; j++) {
+            newGrid[x].push({
+              colour: "gray",
+              x: x,
+              y: j
+            });
+          }
+        }
+        console.log(newGrid);
+        this.grid = newGrid;
+        this.render();
     }
 }
 
