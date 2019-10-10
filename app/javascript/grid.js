@@ -58,78 +58,79 @@ export class BlockGrid {
 
     document.querySelector("#gridEl").innerHTML = "";
     
-        const clickedBlock = block.colour;
+        const clickedBlockColor = block.colour;
         // for simple ONE block
-        this.grid[block.x][block.y].colour = "gray";
+        const gray = "gray";
+        this.grid[block.x][block.y].colour = gray;
     
         let success;
         const nearestBlocks = [];
         const grid = this.grid;
-        if (clickedBlock != "gray") {
+        if (clickedBlockColor != gray) {
           do {
             success = false;
             if (
               block.y + 1 < MAX_Y &&
-              grid[block.x][block.y + 1].colour == clickedBlock
+              grid[block.x][block.y + 1].colour == clickedBlockColor
             ) {
-              grid[block.x][block.y + 1].colour = "gray";
+              grid[block.x][block.y + 1].colour = gray;
               nearestBlocks.push({ x: block.x, y: block.y + 1 });
               success = true;
             }
             if (
               block.y - 1 >= 0 &&
-              grid[block.x][block.y - 1].colour == clickedBlock
+              grid[block.x][block.y - 1].colour == clickedBlockColor
             ) {
-              grid[block.x][block.y - 1].colour = "gray";
+              grid[block.x][block.y - 1].colour = gray;
               nearestBlocks.push({ x: block.x, y: block.y - 1 });
               success = true;
             }
             if (
               block.x + 1 < MAX_X &&
-              grid[block.x + 1][block.y].colour == clickedBlock
+              grid[block.x + 1][block.y].colour == clickedBlockColor
             ) {
-              grid[block.x + 1][block.y].colour = "gray";
+              grid[block.x + 1][block.y].colour = gray;
               nearestBlocks.push({ x: block.x + 1, y: block.y });
               success = true;
             }
             if (
               block.x - 1 >= 0 &&
-              grid[block.x - 1][block.y].colour == clickedBlock
+              grid[block.x - 1][block.y].colour == clickedBlockColor
             ) {
-              grid[block.x - 1][block.y].colour = "gray";
+              grid[block.x - 1][block.y].colour = gray;
               nearestBlocks.push({ x: block.x - 1, y: block.y });
               success = true;
             }
             nearestBlocks.forEach(nearestBlock => {
               if (
                 nearestBlock.y + 1 < MAX_Y &&
-                grid[nearestBlock.x][nearestBlock.y + 1].colour == clickedBlock
+                grid[nearestBlock.x][nearestBlock.y + 1].colour == clickedBlockColor
               ) {
-                grid[nearestBlock.x][nearestBlock.y + 1].colour = "gray";
+                grid[nearestBlock.x][nearestBlock.y + 1].colour = gray;
                 nearestBlocks.push({ x: nearestBlock.x, y: nearestBlock.y + 1 });
                 success = true;
               }
               if (
                 nearestBlock.y - 1 >= 0 &&
-                grid[nearestBlock.x][nearestBlock.y - 1].colour == clickedBlock
+                grid[nearestBlock.x][nearestBlock.y - 1].colour == clickedBlockColor
               ) {
-                grid[nearestBlock.x][nearestBlock.y - 1].colour = "gray";
+                grid[nearestBlock.x][nearestBlock.y - 1].colour = gray;
                 nearestBlocks.push({ x: nearestBlock.x, y: nearestBlock.y - 1 });
                 success = true;
               }
               if (
                 nearestBlock.x + 1 < MAX_X &&
-                grid[nearestBlock.x + 1][nearestBlock.y].colour == clickedBlock
+                grid[nearestBlock.x + 1][nearestBlock.y].colour == clickedBlockColor
               ) {
-                grid[nearestBlock.x + 1][nearestBlock.y].colour = "gray";
+                grid[nearestBlock.x + 1][nearestBlock.y].colour = gray;
                 nearestBlocks.push({ x: nearestBlock.x + 1, y: nearestBlock.y });
                 success = true;
               }
               if (
                 nearestBlock.x - 1 >= 0 &&
-                grid[nearestBlock.x - 1][nearestBlock.y].colour == clickedBlock
+                grid[nearestBlock.x - 1][nearestBlock.y].colour == clickedBlockColor
               ) {
-                grid[nearestBlock.x - 1][nearestBlock.y].colour = "gray";
+                grid[nearestBlock.x - 1][nearestBlock.y].colour = gray;
                 nearestBlocks.push({ x: nearestBlock.x - 1, y: nearestBlock.y });
                 success = true;
               }
@@ -142,7 +143,7 @@ export class BlockGrid {
         for (let x = 0; x < MAX_X; x++) {
           newGrid[x] = [];
           for (let y = 0; y < MAX_Y; y++) {
-            if (grid[x][y].colour != "gray") {
+            if (grid[x][y].colour != gray) {
               newGrid[x].push({
                 colour: grid[x][y].colour, 
                 x: x,
@@ -152,7 +153,7 @@ export class BlockGrid {
           }
           for (let j = newGrid[x].length; j < MAX_Y; j++) {
             newGrid[x].push({
-              colour: "gray",
+              colour: gray,
               x: x,
               y: j
             });
