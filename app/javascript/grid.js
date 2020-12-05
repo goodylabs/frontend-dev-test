@@ -57,6 +57,7 @@ export class BlockGrid {
         this
             .removeNearTwins(x, y, colour)
             .clearGrid()
+            .fallBlocks()
             .render()
     }
 
@@ -77,6 +78,24 @@ export class BlockGrid {
 
     clearGrid (el = document.querySelector('#gridEl')) {
         el.innerHTML = ''
+        return this
+    }
+
+    fallBlocks () {
+        for (let x = 0; x < MAX_X; x++) {
+            const column = this.grid[x]
+
+            for (let y = MAX_Y - 1; y >= 0; y--) {
+              let row = y
+
+              while (column[row].colour === null && column[row + 1]) {
+                column[row].colour = column[row + 1].colour
+                column[row + 1].colour = null
+                row++
+              }
+            }
+        }
+        
         return this
     }
 }
