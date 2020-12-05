@@ -51,7 +51,33 @@ export class BlockGrid {
     }
 
     blockClicked (e, block) {
-        console.log(e, block);
+        const { colour, x, y } = block
+        if (!block.colour) return
+
+        this
+            .removeNearTwins(x, y, colour)
+            .clearGrid()
+            .render()
+    }
+
+    removeNearTwins(x, y, colour) {
+        if (typeof x !== 'number' || typeof y !== 'number') throw new Error('First 2 arguments of removeNearTwins should be numbers')
+        if (!COLOURS.includes(colour)) throw new Error(`${colour} not extists in array COLOURS`)
+
+        if (!this.grid[x] || !this.grid[x][y] || this.grid[x][y].colour !== colour) return this
+
+        this.grid[x][y].colour = null;
+        this.removeNearTwins(x + 1, y, colour);
+        this.removeNearTwins(x - 1, y, colour);
+        this.removeNearTwins(x, y + 1, colour);
+        this.removeNearTwins(x, y - 1, colour);
+
+        return this
+    }
+
+    clearGrid (el = document.querySelector('#gridEl')) {
+        el.innerHTML = ''
+        return this
     }
 }
 
