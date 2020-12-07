@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
-    "test": "gulp buildtests && open test/index.html"
+    "test": "gulp buildtests && open test/index.html",
+    "test-linux": "gulp buildtests && xdg-open test/index.html"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.1.18",
@@ -20,5 +21,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "simulant": "^0.2.2"
   }
 }
