@@ -64,4 +64,34 @@ describe('BlockGrid', () => {
             }
         )
     })
+
+    it(' removeNearTwins should throw error on not number', () => {
+        assert.throws(
+            () => new BlockGrid().removeNearTwins('string', [], 'red'),
+            Error,
+            'First 2 arguments of removeNearTwins should be numbers'
+        )
+    })
+
+    it(' removeNearTwins should throw error on wrong colour', () => {
+        assert.throws(
+            () => new BlockGrid().removeNearTwins(2, 2, 'pink'),
+            Error,
+            'pink not extists in array COLOURS'
+        )
+    })
+
+    it(' should removeNearTwins', () => {
+        const coords = [
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [1, 0],
+        ]
+        const blockGrid = new BlockGrid()
+        coords.map(([x, y]) => blockGrid.grid[x][y].colour = 'red')
+
+        blockGrid.removeNearTwins(0, 1, 'red')
+        coords.map(([x, y]) => assert.equal(blockGrid.grid[x][y].colour, null, `Block ${x, y} is not null`))
+    })
 });
