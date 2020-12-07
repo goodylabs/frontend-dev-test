@@ -94,4 +94,11 @@ describe('BlockGrid', () => {
         blockGrid.removeNearTwins(0, 1, 'red')
         coords.map(([x, y]) => assert.equal(blockGrid.grid[x][y].colour, null, `Block ${x, y} is not null`))
     })
+
+    it(' should clearGrid', () => {
+        new BlockGrid().render().clearGrid()
+        const gridEl = document.querySelector('#gridEl')
+
+        assert.equal(gridEl.innerHTML, '')
+    })
 });
