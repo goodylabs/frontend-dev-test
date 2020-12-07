@@ -101,4 +101,31 @@ describe('BlockGrid', () => {
 
         assert.equal(gridEl.innerHTML, '')
     })
+
+    it(' should fallBlocks', () => {
+        const coords = [
+            {x: 0, y: 0},
+            {x: 0, y: 1},
+            {x: 0, y: 2},
+        ]
+        const blockGrid = new BlockGrid()
+
+        const expectedBlocks = coords.reduce((total, { x, y }) => [...total, {x, y, colour: blockGrid.grid[x][y+coords.length].colour}])
+
+        coords.map(({x, y}) => blockGrid.grid[x][y].colour = 'red')
+
+        blockGrid.removeNearTwins(0, 1, 'red').clearGrid().fallBlocks()
+
+        coords.map(({x}) => {
+            for (let l = 9; l > 6; l--) {
+                assert.equal(blockGrid.grid[x][l].colour, null, `Colour of [${x}][${l}] is not null`)
+            }
+        })
+
+        expectedBlocks.map(({ x, y, colour }) => assert.equal(
+            blockGrid.grid[x][y].colour, 
+            colour,
+            `Block {${x}, ${y}, ${colour}}} not exists in grid`),
+        )
+    })
 });
