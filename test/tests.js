@@ -45,4 +45,23 @@ describe('BlockGrid', () => {
             column.length, 10, `Cloumns should contain 10 rows, but column ${index} contains ${column.length}`
         ))
     })
+
+    it(' should render properly', () => {
+        new BlockGrid().render()
+
+        const { childNodes } = document.querySelector('#gridEl')
+        const childNodesArray = Array.from(childNodes)
+
+        const amount = childNodesArray.reduce((total, column) => total + column.childNodes.length, 0)
+        assert.equal(amount, 100, 'There are no 100 childNodes of #gridEl')
+
+        childNodesArray.map((column, columnIndex) =>
+            {
+                const cells = Array.from(column)
+                cells.map((cell, cellIndex) =>
+                    assert.include(COLOURS, cell.colour, `Block [${columnIndex}][${cellIndex}] has wrong colour`)
+                )
+            }
+        )
+    })
 });
