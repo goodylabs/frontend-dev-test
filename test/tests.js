@@ -128,4 +128,20 @@ describe('BlockGrid', () => {
             `Block {${x}, ${y}, ${colour}}} not exists in grid`),
         )
     })
+
+    it(' should react on blockClicked', () => {
+        const blockGrid = new BlockGrid()
+        const block = blockGrid.grid[0][0]
+        block.colour = 'red'
+        blockGrid.render()
+        blockGrid.blockClicked(null, block)
+
+        expect(
+            blockGrid
+                .removeNearTwins(0, 0, 'red')
+                .clearGrid()
+                .fallBlocks()
+                .render()
+        ).to.have.been.called
+    })
 });
