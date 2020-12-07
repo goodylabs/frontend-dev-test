@@ -29,6 +29,8 @@ const createGridEl = () => {
     document.querySelector('body').appendChild(div)
 }
 
+const setColour = (element, colour) => element.colour = colour
+
 describe('BlockGrid', () => {
     createGridEl()
 
@@ -89,7 +91,7 @@ describe('BlockGrid', () => {
             [1, 0],
         ]
         const blockGrid = new BlockGrid()
-        coords.map(([x, y]) => blockGrid.grid[x][y].colour = 'red')
+        coords.map(([x, y]) => setColour(blockGrid.grid[x][y],'red'))
 
         blockGrid.removeNearTwins(0, 1, 'red')
         coords.map(([x, y]) => assert.equal(blockGrid.grid[x][y].colour, null, `Block ${x, y} is not null`))
@@ -112,7 +114,8 @@ describe('BlockGrid', () => {
 
         const expectedBlocks = coords.reduce((total, { x, y }) => [...total, {x, y, colour: blockGrid.grid[x][y+coords.length].colour}])
 
-        coords.map(({x, y}) => blockGrid.grid[x][y].colour = 'red')
+        setColour(blockGrid.grid[0][3], 'yellow')
+        coords.map(({x, y}) => setColour(blockGrid.grid[x][y], 'red'))
 
         blockGrid.removeNearTwins(0, 1, 'red').clearGrid().fallBlocks()
 
@@ -132,7 +135,7 @@ describe('BlockGrid', () => {
     it(' should react on blockClicked', () => {
         const blockGrid = new BlockGrid()
         const block = blockGrid.grid[0][0]
-        block.colour = 'red'
+        setColour(block, 'red')
         blockGrid.render()
         blockGrid.blockClicked(null, block)
 
