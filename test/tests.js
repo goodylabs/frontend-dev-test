@@ -1,5 +1,9 @@
 import { Block, BlockGrid, COLOURS } from '../app/javascript/grid';
-import { assert, expect } from 'chai';
+import chai, { assert, expect, should } from 'chai';
+import sinonChai from 'sinon-chai'
+import sinon from 'sinon'
+
+chai.use(sinonChai)
 
 let { describe, it } = window;
 
@@ -137,14 +141,18 @@ describe('BlockGrid', () => {
         const block = blockGrid.grid[0][0]
         setColour(block, 'red')
         blockGrid.render()
+
+        const removedTwins = sinon.spy(BlockGrid.prototype, 'removeNearTwins')
+        const clearGrid = sinon.spy(BlockGrid.prototype , 'clearGrid')
+        const falledBlocks = sinon.spy(BlockGrid.prototype , 'fallBlocks')
+        const rendered = sinon.spy(BlockGrid.prototype , 'render')
+
         blockGrid.blockClicked(null, block)
 
-        expect(
-            blockGrid
-                .removeNearTwins(0, 0, 'red')
-                .clearGrid()
-                .fallBlocks()
-                .render()
-        ).to.have.been.called
+        expect(removedTwins).to.have.been.calledBefore(clearGrid)
+        expect(removedTwins).to.have.been.calledWith(0, 0, 'red')
+        expect(clearGrid).to.have.been.calledBefore(falledBlocks)
+        expect(falledBlocks).to.have.been.calledBefore(rendered)
+        expect(rendered).to.have.been.called
     })
 });
