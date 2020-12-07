@@ -47,22 +47,22 @@ describe('BlockGrid', () => {
     })
 
     it(' should render properly', () => {
-        new BlockGrid().render()
+        const blockGrid = new BlockGrid()
+        blockGrid.render()
+        const { grid } = blockGrid
 
-        const { childNodes } = document.querySelector('#gridEl')
-        const childNodesArray = Array.from(childNodes)
+        const gridEl = document.querySelector('#gridEl')
 
-        const amount = childNodesArray.reduce((total, column) => total + column.childNodes.length, 0)
-        assert.equal(amount, 100, 'There are no 100 childNodes of #gridEl')
-
-        childNodesArray.map((column, columnIndex) =>
-            {
-                const cells = Array.from(column)
-                cells.map((cell, cellIndex) =>
-                    assert.include(COLOURS, cell.colour, `Block [${columnIndex}][${cellIndex}] has wrong colour`)
+        grid.map((column, x) => {
+            column.map(({ colour }, y) => {
+                assert.equal(
+                    gridEl.querySelector(`#block_${x}x${y}`).style.background,
+                    colour,
+                    `Block #block_${x}x${y} has wrong colour`
                 )
-            }
-        )
+                assert.include(COLOURS, colour, `Block [${x}][${y}] has wrong colour`)
+            })
+        })
     })
 
     it(' removeNearTwins should throw error on not number', () => {
