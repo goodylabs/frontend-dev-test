@@ -1,5 +1,5 @@
-import { Block, COLOURS } from '../app/javascript/grid';
-import { assert } from 'chai';
+import { Block, BlockGrid, COLOURS } from '../app/javascript/grid';
+import { assert, expect } from 'chai';
 
 let { describe, it } = window;
 
@@ -22,6 +22,27 @@ describe('Block', () => {
 
 });
 
-describe('BlockGrid', () => {
 
+const createGridEl = () => {
+    const div = document.createElement('div')
+    div.setAttribute('id', 'gridEl')
+    document.querySelector('body').appendChild(div)
+}
+
+describe('BlockGrid', () => {
+    createGridEl()
+
+    beforeEach(() => {
+        document.querySelector('#gridEl').innerHTML = ''
+    })
+
+    it(' should contain proper amount of blocks on constructor called', () => {
+        const { grid } = new BlockGrid()
+
+        assert.equal(grid.length, 10, `Grid should contains 10 columns, but there are ${grid.length}`)
+
+        grid.map((column, index) => assert.equal(
+            column.length, 10, `Cloumns should contain 10 rows, but column ${index} contains ${column.length}`
+        ))
+    })
 });
